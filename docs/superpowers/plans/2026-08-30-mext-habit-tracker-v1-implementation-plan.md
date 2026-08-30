@@ -66,14 +66,14 @@ Create `web/` with the current stable official Next.js App Router scaffold using
 - `src/` layout.
 - Tailwind CSS.
 - ESLint.
-- npm and a committed `package-lock.json`.
+- pnpm and a committed `pnpm-lock.yaml`, matching the bundled workspace toolchain available during implementation.
 
 Add shadcn/ui using the existing Next.js project and install only the primitives needed by the first slice. Do not keep starter branding or placeholder content.
 
 Expected core files:
 
 - `web/package.json`
-- `web/package-lock.json`
+- `web/pnpm-lock.yaml`
 - `web/next.config.ts`
 - `web/tsconfig.json`
 - `web/src/app/layout.tsx`
