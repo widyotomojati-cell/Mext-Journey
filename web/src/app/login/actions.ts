@@ -1,8 +1,46 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
+import { validatePin } from "@/features/auth/domain/pin";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginState = { message: string; error: boolean };
+
+export async function signInWithPin(
+  _previousState: LoginState,
+  formData: FormData,
+): Promise<LoginState> {
+  const pin = String(formData.get("pin") ?? "").trim();
+  const validationError = validatePin(pin);
+
+  if (validationError) {
+    return { message: validationError, error: true };
+  }
+
+  const ownerEmail = process.env.MEXT_OWNER_EMAIL?.trim().toLowerCase();
+  if (!ownerEmail) {
+    return {
+      message: "Login PIN belum diaktifkan. Gunakan recovery email dulu.",
+      error: true,
+    };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({
+    email: ownerEmail,
+    password: pin,
+  });
+
+  if (error) {
+    return {
+      message: "PIN belum cocok. Periksa lagi dan coba sebentar lagi.",
+      error: true,
+    };
+  }
+
+  redirect("/");
+}
 
 export async function sendMagicLink(
   _previousState: LoginState,
@@ -17,18 +55,21 @@ export async function sendMagicLink(
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${appUrl}/auth/callback` },
+    options: {
+      emailRedirectTo: `${appUrl}/auth/callback`,
+      shouldCreateUser: false,
+    },
   });
 
   if (error) {
     return {
-      message: "Magic link belum terkirim. Coba lagi sebentar.",
+      message: "Recovery link belum terkirim. Coba lagi sebentar.",
       error: true,
     };
   }
 
   return {
-    message: "Magic link terkirim. Buka inbox lalu klik link-nya.",
+    message: "Recovery link terkirim. Buka inbox di device ini.",
     error: false,
   };
 }

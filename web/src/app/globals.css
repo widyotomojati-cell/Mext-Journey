@@ -644,3 +644,44 @@
     display: none;
   }
 }
+
+
+/* PIN authentication */
+@layer components {
+  .profile-control--active {
+    @apply border-primary/35 bg-primary/8 text-primary;
+  }
+
+  .pin-input {
+    @apply text-center font-mono text-xl font-bold tracking-[0.55em];
+    padding-left: calc(1rem + 0.55em);
+  }
+
+  .login-help {
+    @apply -mt-1 text-xs leading-5 text-muted-foreground;
+  }
+
+  .login-switch {
+    @apply mt-5 inline-flex text-sm font-semibold text-primary hover:underline;
+  }
+
+  .security-card {
+    @apply rounded-3xl border border-border/80 bg-card/90 p-6 shadow-[0_20px_55px_rgba(28,65,52,0.1)] sm:p-8;
+  }
+
+  .security-card__icon {
+    @apply grid size-12 place-items-center rounded-2xl bg-secondary text-primary;
+  }
+
+  .security-card h2 {
+    @apply mt-5 text-2xl font-semibold tracking-[-0.035em];
+  }
+
+  .security-card > div > p {
+    @apply mt-3 max-w-2xl text-sm leading-6 text-muted-foreground;
+  }
+
+  .security-form {
+    @apply mt-7 grid max-w-md gap-4 rounded-2xl border border-border/75 bg-background/65 p-5;
+  }
+}

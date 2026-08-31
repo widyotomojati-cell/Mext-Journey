@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BarChart3, Landmark, Map, Settings2, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
-type ActiveNav = "today" | "journey" | "progress";
+type ActiveNav = "today" | "journey" | "progress" | "settings";
 
 type AppShellProps = {
   children: ReactNode;
@@ -49,7 +49,11 @@ export function AppShell({
                 key={item.value}
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={isActive ? "app-nav__link app-nav__link--active" : "app-nav__link"}
+                className={
+                  isActive
+                    ? "app-nav__link app-nav__link--active"
+                    : "app-nav__link"
+                }
               >
                 <Icon size={17} strokeWidth={1.9} aria-hidden="true" />
                 <span>{item.label}</span>
@@ -58,13 +62,21 @@ export function AppShell({
           })}
         </nav>
 
-        <div className="profile-control" aria-label="Profile Dio">
+        <Link
+          href="/settings/security"
+          className={
+            activeNav === "settings"
+              ? "profile-control profile-control--active"
+              : "profile-control"
+          }
+          aria-label="Pengaturan akun Dio"
+        >
           <span className="profile-avatar" aria-hidden="true">
             D
           </span>
           <span className="hidden text-sm font-semibold sm:inline">Dio</span>
           <Settings2 size={16} strokeWidth={1.8} aria-hidden="true" />
-        </div>
+        </Link>
       </header>
 
       <main className="app-main">
