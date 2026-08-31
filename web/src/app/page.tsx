@@ -1,7 +1,8 @@
 import { AppShell } from "@/components/app-shell";
+import { completeQuest, startQuest } from "@/features/today/actions";
 import { FocusedQuestCard } from "@/features/today/components/focused-quest-card";
 import { ProgressSummary } from "@/features/today/components/progress-summary";
-import { dayOneQuest } from "@/features/today/fixtures/day-one";
+import { getTodayDashboard } from "@/features/today/data/get-today-dashboard";
 import { ArrowUpRight, BookOpenText, Leaf } from "lucide-react";
 
 function ResearchFocusCard() {
@@ -24,14 +25,35 @@ function ResearchFocusCard() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const dashboard = await getTodayDashboard();
+
+  if (dashboard.kind === "waiting") {
+    return (
+      <AppShell aside={<ResearchFocusCard />}>
+        <section className="waiting-card">
+          <p className="eyebrow">Foundation sprint</p>
+          <h1 className="page-title">Quest pertama segera dibuka.</h1>
+          <p className="page-lede">
+            Sprint lo mulai Senin, {dashboard.startDate}. Kita jaga pintu
+            masuknya tetap kecil: 15 menit saja.
+          </p>
+        </section>
+      </AppShell>
+    );
+  }
+
+  const { assignment, quest, streak, totalXp } = dashboard;
+
   return (
     <AppShell
       aside={
         <div className="grid gap-4">
           <ProgressSummary
-            day={dayOneQuest.day}
-            totalDays={dayOneQuest.totalDays}
+            day={quest.day}
+            totalDays={quest.totalDays}
+            streak={streak}
+            totalXp={totalXp}
           />
           <ResearchFocusCard />
         </div>
@@ -39,7 +61,7 @@ export default function Home() {
     >
       <section className="page-intro" aria-labelledby="today-title">
         <div>
-          <p className="eyebrow text-primary">Today · {dayOneQuest.dateLabel}</p>
+          <p className="eyebrow text-primary">Today · {quest.dateLabel}</p>
           <h1 id="today-title" className="page-title">
             Siap mulai, Dio?
           </h1>
@@ -49,11 +71,17 @@ export default function Home() {
         </div>
         <div className="sprint-chip">
           <span className="sprint-chip__dot" aria-hidden="true" />
-          {dayOneQuest.sprintLabel}
+          {quest.sprintLabel}
         </div>
       </section>
 
-      <FocusedQuestCard quest={dayOneQuest} />
+      <FocusedQuestCard
+        quest={quest}
+        assignmentId={assignment.id}
+        status={assignment.status}
+        startAction={startQuest}
+        completeAction={completeQuest}
+      />
 
       <section className="next-note" aria-labelledby="next-note-title">
         <BookOpenText size={20} strokeWidth={1.8} aria-hidden="true" />

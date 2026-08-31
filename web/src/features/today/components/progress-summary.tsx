@@ -4,9 +4,16 @@ import { Flame, Sparkles } from "lucide-react";
 type ProgressSummaryProps = {
   day: number;
   totalDays: number;
+  streak?: number;
+  totalXp?: number;
 };
 
-export function ProgressSummary({ day, totalDays }: ProgressSummaryProps) {
+export function ProgressSummary({
+  day,
+  totalDays,
+  streak = 0,
+  totalXp = 0,
+}: ProgressSummaryProps) {
   const progressValue = Math.round((day / totalDays) * 100);
 
   return (
@@ -33,14 +40,14 @@ export function ProgressSummary({ day, totalDays }: ProgressSummaryProps) {
         <div className="metric-tile">
           <Flame size={17} strokeWidth={1.8} aria-hidden="true" />
           <span>
-            <strong>0 hari</strong>
+            <strong>{streak} hari</strong>
             <small>streak</small>
           </span>
         </div>
         <div className="metric-tile">
           <Sparkles size={17} strokeWidth={1.8} aria-hidden="true" />
           <span>
-            <strong>0 XP</strong>
+            <strong>{totalXp} XP</strong>
             <small>terkumpul</small>
           </span>
         </div>

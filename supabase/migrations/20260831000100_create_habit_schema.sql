@@ -619,7 +619,7 @@ begin
     p_storage_path,
     p_difficulty
   )
-  on conflict (assignment_id) do update
+  on conflict on constraint evidence_assignment_id_key do update
   set
     mode = excluded.mode,
     note_text = excluded.note_text,
@@ -649,7 +649,7 @@ begin
     v_xp,
     'daily-xp'
   )
-  on conflict (assignment_id, event_type) do nothing;
+  on conflict on constraint reward_ledger_assignment_id_event_type_key do nothing;
 
   return query
   select

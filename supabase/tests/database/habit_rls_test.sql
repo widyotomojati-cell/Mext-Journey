@@ -163,6 +163,8 @@ select throws_ok(
       date '2026-09-07'
     )
   $$,
+  '42501',
+  null,
   'owner cannot create another user enrollment'
 );
 
@@ -176,6 +178,8 @@ select throws_ok(
       'Cross-user evidence'
     )
   $$,
+  '42501',
+  null,
   'owner cannot attach evidence to another assignment'
 );
 
@@ -196,6 +200,8 @@ select throws_ok(
       now() + interval '1 day'
     )
   $$,
+  '42501',
+  null,
   'direct assignment insertion is denied'
 );
 
@@ -209,6 +215,8 @@ select throws_ok(
       0
     )
   $$,
+  '42501',
+  null,
   'direct reward insertion is denied'
 );
 
@@ -217,11 +225,15 @@ select set_config('request.jwt.claims', '{"role":"anon"}', true);
 
 select throws_ok(
   $$ select * from public.profiles $$,
+  '42501',
+  null,
   'anonymous profile access is denied by grants'
 );
 
 select throws_ok(
   $$ select * from public.quest_packs $$,
+  '42501',
+  null,
   'anonymous quest content access is denied by grants'
 );
 
