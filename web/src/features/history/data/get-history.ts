@@ -17,7 +17,7 @@ type EvidenceRow = {
   difficulty: number | null;
 };
 
-type AssignmentRow = {
+type MentorReviewRow = {\n  verdict: "strong" | "refine";\n  strengths: string[];\n  focus_area: string;\n  suggestion: string;\n  follow_up_question: string | null;\n};\n\ntype AssignmentRow = {
   id: string;
   assignment_date: string;
   status: AssignmentStatus;
@@ -34,7 +34,7 @@ type AssignmentRow = {
     xp: number;
     event_type: string;
   }>;
-  journey_enrollments: Related<{
+  mentor_reviews: Related<MentorReviewRow>;\n  journey_enrollments: Related<{
     quest_packs: Related<{
       title: string;
     }>;
@@ -81,7 +81,7 @@ export async function getHistory(): Promise<HistoryItem[]> {
   const { data, error } = await supabase
     .from("daily_assignments")
     .select(
-      "id, assignment_date, status, completed_at, quest_definitions(day_number, quest_type, theme, title, duration_minutes), evidence(mode, note_text, source_url, storage_path, difficulty), reward_ledger(xp, event_type), journey_enrollments(quest_packs(title))",
+      "id, assignment_date, status, completed_at, quest_definitions(day_number, quest_type, theme, title, duration_minutes), evidence(mode, note_text, source_url, storage_path, difficulty), reward_ledger(xp, event_type), mentor_reviews(verdict, strengths, focus_area, suggestion, follow_up_question), journey_enrollments(quest_packs(title))",
     )
     .eq("user_id", userId)
     .in("status", ["completed", "missed"])
@@ -92,7 +92,7 @@ export async function getHistory(): Promise<HistoryItem[]> {
   return (data as unknown as AssignmentRow[]).flatMap((assignment) => {
     const definition = firstRelated(assignment.quest_definitions);
     const evidence = firstRelated(assignment.evidence);
-    const enrollment = firstRelated(assignment.journey_enrollments);
+    const mentorReview = firstRelated(assignment.mentor_reviews);\n    const enrollment = firstRelated(assignment.journey_enrollments);
     const pack = firstRelated(enrollment?.quest_packs ?? null);
     const rewards = Array.isArray(assignment.reward_ledger)
       ? assignment.reward_ledger
@@ -128,7 +128,7 @@ export async function getHistory(): Promise<HistoryItem[]> {
         xp: rewards
           .filter((reward) => reward.event_type === "daily-xp")
           .reduce((total, reward) => total + reward.xp, 0),
-        packTitle: pack?.title ?? "MEXT Journey",
+        packTitle: pack?.title ?? "MEXT Journey",\n        mentorReview,
       },
     ];
   });
