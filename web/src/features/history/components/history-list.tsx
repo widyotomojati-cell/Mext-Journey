@@ -142,6 +142,17 @@ export function HistoryList({ items }: { items: HistoryItem[] }) {
                 ) : null}
               </div>
 
+              {item.mentorReview ? (
+                <div className="mentor-feedback">
+                  <p className="eyebrow">Review mentor</p>
+                  <strong>{item.mentorReview.verdict === "strong" ? "Jawaban sudah cukup kuat" : "Jawaban perlu dipertegas"}</strong>
+                  {item.mentorReview.strengths.length ? <p>{item.mentorReview.strengths.join(" · ")}</p> : null}
+                  <p><b>Fokus:</b> {item.mentorReview.focus_area}</p>
+                  <p><b>Upgrade:</b> {item.mentorReview.suggestion}</p>
+                  {item.mentorReview.follow_up_question ? <p><b>Next prompt:</b> {item.mentorReview.follow_up_question}</p> : null}
+                </div>
+              ) : null}
+
               {item.evidence?.value ? (
                 <div className="history-evidence">
                   <p className="eyebrow">Jawaban Dio</p>
