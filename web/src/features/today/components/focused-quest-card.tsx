@@ -3,13 +3,13 @@
 import { useActionState, useState } from "react";
 import { ArrowRight, CheckCircle2, Clock3, PencilLine, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { initialMentorReviewState, requestMentorReview } from "@/features/mentor/actions";
+import { requestMentorReview } from "@/features/mentor/actions";
 
 type Quest={theme:string;title:string;description:string;durationMinutes:number;rewardXp:number;evidenceLabel:string};
 type Props={quest:Quest;assignmentId?:string;status?:"available"|"started"|"completed"|"missed";startAction?:(formData:FormData)=>void|Promise<void>;completeAction?:(formData:FormData)=>void|Promise<void>};
 
 export function FocusedQuestCard({quest,assignmentId="",status="available",startAction,completeAction}:Props) {
- const [answer,setAnswer]=useState(""); const [reviewState,reviewAction]=useActionState(requestMentorReview,initialMentorReviewState);
+ const [answer,setAnswer]=useState(""); const [reviewState,reviewAction]=useActionState(requestMentorReview,{ status: "idle" });
  const started=status==="started",completed=status==="completed";
  return <article className="quest-card" aria-labelledby="quest-title">
   <div className="quest-card__topline"><span className="quest-number">Main quest</span><span className="quest-duration"><Clock3 size={16}/>{quest.durationMinutes} menit</span></div>
