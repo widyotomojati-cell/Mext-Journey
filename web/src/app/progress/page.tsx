@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Award,
+  BookOpenText,
   Check,
   Clock3,
   Flame,
@@ -10,8 +11,8 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
-import { getJourneyOverview } from "@/features/journey/data/get-journey-overview";
 import { Progress } from "@/components/ui/progress";
+import { getJourneyOverview } from "@/features/journey/data/get-journey-overview";
 
 export default async function ProgressPage() {
   const overview = await getJourneyOverview();
@@ -29,7 +30,7 @@ export default async function ProgressPage() {
           </h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             {overview.nextQuest?.title ??
-              "Semua fondasi sprint pertama sudah lo tuntaskan."}
+              "Level ini sudah lo tuntaskan. Jejaknya tetap aman di Riwayat."}
           </p>
           <Link href="/journey" className="text-link mt-5">
             Buka Journey Map <ArrowRight size={15} aria-hidden="true" />
@@ -59,20 +60,22 @@ export default async function ProgressPage() {
         <div className="progress-hero__metric">
           <Flame size={20} aria-hidden="true" />
           <strong>{overview.streak}</strong>
-          <span>Hari streak</span>
+          <span>Hari streak level ini</span>
         </div>
         <div className="progress-hero__metric">
           <Clock3 size={20} aria-hidden="true" />
           <strong>{overview.completedMinutes}</strong>
-          <span>Menit fokus</span>
+          <span>Menit fokus level ini</span>
         </div>
       </section>
 
       <section className="progress-detail">
         <div className="progress-detail__header">
           <div>
-            <p className="eyebrow">Foundation sprint</p>
-            <h2>{overview.completedCount} dari {overview.totalDays} quest</h2>
+            <p className="eyebrow">{overview.packTitle}</p>
+            <h2>
+              {overview.completedCount} dari {overview.totalDays} quest
+            </h2>
           </div>
           <strong>{overview.completionPercent}%</strong>
         </div>
@@ -97,6 +100,21 @@ export default async function ProgressPage() {
           ))}
         </div>
       </section>
+
+      <Link href="/history" className="history-entry-cta">
+        <span className="history-entry-cta__icon" aria-hidden="true">
+          <BookOpenText size={22} />
+        </span>
+        <span className="history-entry-cta__copy">
+          <span className="eyebrow">Riwayat perjalanan</span>
+          <strong>Buka semua quest dan jawaban lama</strong>
+          <small>
+            Cari ulang ide riset, paper, keputusan, dan evidence dari level
+            sebelumnya.
+          </small>
+        </span>
+        <ArrowRight size={19} aria-hidden="true" />
+      </Link>
 
       <section
         className={
