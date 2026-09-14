@@ -17,7 +17,15 @@ type EvidenceRow = {
   difficulty: number | null;
 };
 
-type MentorReviewRow = {\n  verdict: "strong" | "refine";\n  strengths: string[];\n  focus_area: string;\n  suggestion: string;\n  follow_up_question: string | null;\n};\n\ntype AssignmentRow = {
+type MentorReviewRow = {
+  verdict: "strong" | "refine";
+  strengths: string[];
+  focus_area: string;
+  suggestion: string;
+  follow_up_question: string | null;
+};
+
+type AssignmentRow = {
   id: string;
   assignment_date: string;
   status: AssignmentStatus;
@@ -34,7 +42,8 @@ type MentorReviewRow = {\n  verdict: "strong" | "refine";\n  strengths: string[]
     xp: number;
     event_type: string;
   }>;
-  mentor_reviews: Related<MentorReviewRow>;\n  journey_enrollments: Related<{
+  mentor_reviews: Related<MentorReviewRow>;
+  journey_enrollments: Related<{
     quest_packs: Related<{
       title: string;
     }>;
@@ -92,7 +101,8 @@ export async function getHistory(): Promise<HistoryItem[]> {
   return (data as unknown as AssignmentRow[]).flatMap((assignment) => {
     const definition = firstRelated(assignment.quest_definitions);
     const evidence = firstRelated(assignment.evidence);
-    const mentorReview = firstRelated(assignment.mentor_reviews);\n    const enrollment = firstRelated(assignment.journey_enrollments);
+    const mentorReview = firstRelated(assignment.mentor_reviews);
+    const enrollment = firstRelated(assignment.journey_enrollments);
     const pack = firstRelated(enrollment?.quest_packs ?? null);
     const rewards = Array.isArray(assignment.reward_ledger)
       ? assignment.reward_ledger
@@ -128,7 +138,8 @@ export async function getHistory(): Promise<HistoryItem[]> {
         xp: rewards
           .filter((reward) => reward.event_type === "daily-xp")
           .reduce((total, reward) => total + reward.xp, 0),
-        packTitle: pack?.title ?? "MEXT Journey",\n        mentorReview,
+        packTitle: pack?.title ?? "MEXT Journey",
+        mentorReview,
       },
     ];
   });
