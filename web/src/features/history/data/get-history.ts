@@ -9,6 +9,14 @@ import { createClient } from "@/lib/supabase/server";
 
 type Related<T> = T | T[] | null;
 
+type EvidenceRow = {
+  mode: EvidenceMode;
+  note_text: string | null;
+  source_url: string | null;
+  storage_path: string | null;
+  difficulty: number | null;
+};
+
 type AssignmentRow = {
   id: string;
   assignment_date: string;
@@ -21,13 +29,7 @@ type AssignmentRow = {
     title: string;
     duration_minutes: number;
   }>;
-  evidence: Related<{
-    mode: EvidenceMode;
-    note_text: string | null;
-    source_url: string | null;
-    storage_path: string | null;
-    difficulty: number | null;
-  }>;
+  evidence: Related<EvidenceRow>;
   reward_ledger: Related<{
     xp: number;
     event_type: string;
@@ -63,15 +65,7 @@ function firstRelated<T>(value: Related<T>) {
   return value;
 }
 
-function evidenceValue(
-  evidence: NonNullable<ReturnType<typeof firstRelated<{
-    mode: EvidenceMode;
-    note_text: string | null;
-    source_url: string | null;
-    storage_path: string | null;
-    difficulty: number | null;
-  }>>>,
-) {
+function evidenceValue(evidence: EvidenceRow) {
   if (evidence.mode === "note") return evidence.note_text ?? "";
   if (evidence.mode === "url") return evidence.source_url ?? "";
   return evidence.storage_path ?? "";
