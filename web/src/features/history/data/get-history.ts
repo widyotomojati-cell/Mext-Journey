@@ -67,6 +67,7 @@ export type HistoryItem = {
   } | null;
   xp: number;
   packTitle: string;
+  mentorReview: MentorReviewRow | null;
 };
 
 function firstRelated<T>(value: Related<T>) {
