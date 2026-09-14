@@ -47,29 +47,34 @@ export async function getTodayDashboard() {
   const assignment = (assignments?.[0] ?? null) as Assignment | null;
 
   if (!assignment) {
-    return { kind: "waiting" as const, startDate: enrollment.start_date };
+    return {
+      kind: "waiting" as const,
+      startDate: enrollment.start_date,
+      completed: enrollment.status === "completed",
+    };
   }
 
-  const [questResult, packResult, rewardResult, historyResult] = await Promise.all([
-    supabase
-      .from("quest_definitions")
-      .select(
-        "day_number, quest_type, theme, title, instructions, evidence_prompt, duration_minutes, xp_value",
-      )
-      .eq("id", assignment.quest_definition_id)
-      .single(),
-    supabase
-      .from("journey_enrollments")
-      .select("quest_packs(title, total_days)")
-      .eq("id", enrollment.id)
-      .single(),
-    supabase.from("reward_ledger").select("xp"),
-    supabase
-      .from("daily_assignments")
-      .select("status, quest_definitions(quest_type)")
-      .in("status", ["completed", "missed"])
-      .order("assignment_date", { ascending: true }),
-  ]);
+  const [questResult, packResult, rewardResult, historyResult] =
+    await Promise.all([
+      supabase
+        .from("quest_definitions")
+        .select(
+          "day_number, quest_type, theme, title, instructions, evidence_prompt, duration_minutes, xp_value",
+        )
+        .eq("id", assignment.quest_definition_id)
+        .single(),
+      supabase
+        .from("journey_enrollments")
+        .select("quest_packs(title, total_days)")
+        .eq("id", enrollment.id)
+        .single(),
+      supabase.from("reward_ledger").select("xp"),
+      supabase
+        .from("daily_assignments")
+        .select("status, quest_definitions(quest_type)")
+        .in("status", ["completed", "missed"])
+        .order("assignment_date", { ascending: true }),
+    ]);
 
   if (questResult.error) throw questResult.error;
   if (packResult.error) throw packResult.error;
