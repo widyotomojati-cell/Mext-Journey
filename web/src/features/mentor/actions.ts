@@ -9,9 +9,6 @@ export type MentorReviewState = {
   review?: { verdict: "strong" | "refine"; strengths: string[]; focusArea: string; suggestion: string; followUpQuestion: string | null };
 };
 
-const initial: MentorReviewState = { status: "idle" };
-export { initial as initialMentorReviewState };
-
 export async function requestMentorReview(_: MentorReviewState, formData: FormData): Promise<MentorReviewState> {
   const assignmentId=String(formData.get("assignmentId")??"");
   const answer=String(formData.get("evidenceNote")??"").trim();
