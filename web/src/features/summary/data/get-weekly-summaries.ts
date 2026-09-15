@@ -10,6 +10,7 @@ export type WeeklySummary = {
   xp: number;
   themes: string[];
   highlights: CompletedItem[];
+  mentorItems: CompletedItem[];
   cumulative: { completedCount: number; minutes: number; xp: number; weeks: number };
 };
 
@@ -62,6 +63,7 @@ export async function getWeeklySummaries(): Promise<WeeklySummary[]> {
       xp,
       themes: [...new Set(items.map((item) => item.theme))].slice(0, 4),
       highlights: items.slice(-4).reverse(),
+      mentorItems: items,
       cumulative: {
         completedCount: runningCount,
         minutes: runningMinutes,
