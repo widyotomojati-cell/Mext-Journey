@@ -878,3 +878,27 @@
   .mentor-feedback p { @apply text-muted-foreground; }
   .mentor-feedback b { @apply text-foreground; }
 }
+
+/* Weekly journey summaries */
+@layer components {
+  .weekly-summary-list { @apply grid gap-5; }
+  .weekly-summary-card { @apply rounded-3xl border border-border/80 bg-card/90 p-6 shadow-[0_18px_48px_rgba(28,65,52,0.09)] sm:p-7; }
+  .weekly-summary-card__header { @apply flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between; }
+  .weekly-summary-card__header h2 { @apply mt-2 text-2xl font-semibold tracking-[-0.035em]; }
+  .weekly-summary-card__badge { @apply inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-accent-foreground; }
+  .weekly-summary-card__metrics { @apply mt-6 grid gap-2 border-y border-border/65 py-4 text-sm sm:grid-cols-3; }
+  .weekly-summary-card__metrics span { @apply flex items-center gap-2 text-muted-foreground; }
+  .weekly-summary-card__metrics svg { @apply text-primary; }
+  .weekly-summary-card__metrics strong { @apply text-foreground; }
+  .weekly-summary-card__section { @apply mt-5; }
+  .weekly-summary-card__themes { @apply mt-3 flex flex-wrap gap-2; }
+  .weekly-summary-card__themes span { @apply rounded-full border border-primary/20 bg-primary/7 px-3 py-1.5 text-xs font-semibold text-primary; }
+  .weekly-summary-card__highlights { @apply mt-3 grid gap-3; }
+  .weekly-summary-card__highlights li { @apply flex items-start gap-3 rounded-xl bg-background/70 p-3 text-sm; }
+  .weekly-summary-card__highlights li > svg { @apply mt-0.5 shrink-0 text-primary; }
+  .weekly-summary-card__highlights strong, .weekly-summary-card__highlights small { @apply block; }
+  .weekly-summary-card__highlights small { @apply mt-1 whitespace-pre-wrap leading-5 text-muted-foreground; }
+  .weekly-summary-card__cumulative { @apply mt-6 flex flex-col gap-1 rounded-2xl border border-accent/25 bg-accent/7 p-4 text-sm sm:flex-row sm:items-center sm:justify-between; }
+  .weekly-summary-card__cumulative span { @apply text-muted-foreground; }
+  .weekly-summary-card__cumulative strong { @apply text-foreground; }
+}
