@@ -1,6 +1,7 @@
 import { BookOpenText, CheckCircle2, Clock3, Sparkles, Target } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
+import { CopyWeeklyMentorPrompt } from "@/features/summary/components/copy-weekly-mentor-prompt";
 import { getWeeklySummaries } from "@/features/summary/data/get-weekly-summaries";
 
 export default async function SummaryPage() {
@@ -70,6 +71,15 @@ export default async function SummaryPage() {
                   ))}
                 </ul>
               </div>
+
+              <CopyWeeklyMentorPrompt
+                weekLabel={summary.label}
+                completedCount={summary.completedCount}
+                minutes={summary.minutes}
+                xp={summary.xp}
+                cumulative={summary.cumulative}
+                items={summary.mentorItems}
+              />
 
               <footer className="weekly-summary-card__cumulative">
                 <span>Akumulasi sampai minggu ini</span>
