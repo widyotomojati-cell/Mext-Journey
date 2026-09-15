@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { BarChart3, Landmark, Map, Settings2, Target } from "lucide-react";
+import { BarChart3, Landmark, Map, Settings2, Target, CalendarDays } from "lucide-react";
 import type { ReactNode } from "react";
 
-type ActiveNav = "today" | "journey" | "progress" | "settings";
+type ActiveNav = "today" | "journey" | "progress" | "summary" | "settings";
 
 type AppShellProps = {
   children: ReactNode;
