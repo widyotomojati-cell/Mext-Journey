@@ -19,6 +19,7 @@ const navigation = [
     value: "progress" as const,
     icon: BarChart3,
   },
+  { href: "/summary", label: "Summary", value: "summary" as const, icon: CalendarDays },
 ];
 
 export function AppShell({
