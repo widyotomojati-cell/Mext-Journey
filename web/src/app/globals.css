@@ -902,3 +902,11 @@
   .weekly-summary-card__cumulative span { @apply text-muted-foreground; }
   .weekly-summary-card__cumulative strong { @apply text-foreground; }
 }
+
+
+@layer components {
+  .weekly-mentor-cta { @apply mt-6 rounded-2xl border border-primary/25 bg-primary/7 p-4; }
+  .weekly-mentor-cta > div > p:last-child { @apply mt-1 text-sm leading-6 text-muted-foreground; }
+  .weekly-mentor-cta__button { @apply mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90; }
+  .weekly-mentor-cta > small { @apply mt-3 flex items-center gap-1.5 text-xs leading-5 text-muted-foreground; }
+}
